@@ -1,0 +1,44 @@
+{
+  "name": "movie-debate-agent",
+  "version": "0.1.0",
+  "description": "AI-powered multi-agent movie recommendation system with live reasoning streams",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter frontend dev",
+    "build": "pnpm --filter frontend build",
+    "start": "pnpm --filter frontend start",
+    "lint": "pnpm --filter frontend lint",
+    "type-check": "pnpm --filter frontend type-check",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "backend:dev": "cd backend && poetry run uvicorn app.main:app --reload",
+    "backend:install": "cd backend && poetry install",
+    "setup": "pnpm install && pnpm backend:install"
+  },
+  "keywords": [
+    "ai",
+    "langchain",
+    "mcp",
+    "faiss",
+    "nextjs",
+    "fastapi",
+    "movie-recommendation",
+    "multi-agent",
+    "hackathon"
+  ],
+  "author": "Movie Debate Agent Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/movie-debate-agent.git"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0"
+} 

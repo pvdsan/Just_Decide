@@ -1,9 +1,96 @@
-# This is our hackathon app
+# Movie Debate Agent 🎬
 
-Find the dataset at https://www.kaggle.com/datasets/jrobischon/wikipedia-movie-plots?resource=download
-It should be a 77MB csv file of movies and plots
+**AI-powered multi-agent movie recommendation system with live reasoning streams**
 
+A 3-hour hackathon build showcasing LangChain + MCP architecture where four AI "lawyer" agents debate to reach consensus on the perfect movie for your group.
 
-Americans Tommy Albright (Gene Kelly) and Jeff Douglas (Van Johnson) are on a hunting trip in Scotland and become lost in the woodlands. They happen upon Brigadoon, a miraculously blessed village that rises out of the mists every hundred years for only a day. (This was done so that the village would never be changed or destroyed by the outside world.) If any villager ever leaves Brigadoon, the spell will be broken and the village will vanish forever, and any outsider who wishes to stay must love someone in the village strongly enough to accept the loss of everything he or she knew in the outside world. Tommy falls in love with village lass Fiona Campbell (Cyd Charisse), whose younger sister Jean (Virginia Bosler), is about to be married to Charlie Dalrymple (Jimmy Thompson). When Tommy and Jeff happen upon clues about the village and its people that make no sense, Fiona takes them to see Mr. Lundie (Barry Jones), the village schoolmaster, who tells them the story of Brigadoon and the miracle. That evening, Mr. Lundie officiates at the wedding of Jean and Charlie, which Tommy and Fiona attend. Interrupting the wedding, the jealous Harry Beaton (Hugh Laing) announces he is leaving Brigadoon to make everything disappear, since the girl he loves, Jean, is marrying another man. Harry's words cause mass chaos among the townspeople and they all rush to stop him. Harry almost crosses the bridge but is stopped short by Tommy, who is knocked unconscious. With men closing in on him, Harry climbs up a tree to hide but is soon shot accidentally by Jeff, who skipped the wedding to hunt, and ends up shooting at a bird that flew by Harry. Harry falls dead to the ground and is soon found by the men. Fiona frantically searches to find Tommy. Confessing their love for each other, they decide to marry, allowing Tommy to stay in Brigadoon for good. But while Fiona goes off to find Mr. Lundie, Tommy tells Jeff about his plan. Jeff, drunk and remorseful of accidentally killing Harry, tells Tommy he can't just leave everything in the real world behind for this girl he's only known a day. Fiona returns with Mr. Lundie, but Tommy confesses that he cannot stay. Fiona says she understands but is heartbroken and they say good-bye before Brigadoon completely disappears. Tommy and Jeff cross the bridge and walk away.
-Back in New York City, Tommy can think only of Fiona. Unable even to talk with his fiancee, Tommy ends his relationship with her and calls Jeff, telling him to get the first flight back to Scotland. He and Jeff return to the same spot where they were lost, though Jeff reminds him again the village will not be there. But suddenly Tommy sees lights start to appear through the mist and runs toward them. Brigadoon reappears and Tommy gets to the foot of the bridge to see Mr. Lundie half-awake on the other side saying: "Tommy, lad, you! My, my, you must really love her. You woke me up." Tommy seems stunned that Brigadoon has been brought back, but Mr. Lundie reminds him: "I told ye, if you love someone deeply enough, anything is possible ... even miracles."
-Tommy then runs across the bridge and reunites with Fiona as the village fades back into the mist.
+## 🏗️ Architecture
+
+```
+┌───────────────┐   WebSocket/SSE   ┌────────────────┐
+│ Next.js 15 UI │◄──────────────────│ FastAPI Backend│
+│ (Magic MCP)   │                   │  • LangChain   │
+└───────────────┘                   │  • MCP server  │
+     ▲  ▲   ▲                       │  • Debate loop │
+     │  │   │                       │  • Faiss index │
+     │  │   └── REST: /start, /status, /embed ──────┐
+     │  └────── Faiss vectors over HTTP ─────────────┤
+     └──────────── Facebook AI Faiss (in-memory) ────┘
+```
+
+## 🚀 Quick Start
+
+1. **Clone & Setup**
+   ```bash
+   git clone <repo-url>
+   cd Just_Decide
+   cp .env.example .env
+   # Edit .env with your OPENAI_API_KEY
+   ```
+
+2. **One-Command Boot**
+   ```bash
+   docker compose up --build
+   ```
+
+3. **Access**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000
+   - API Docs: http://localhost:8000/docs
+
+## 📁 Project Structure
+
+```
+Just_Decide/
+├── backend/                 # FastAPI + LangChain + MCP
+│   ├── app/
+│   │   ├── main.py         # FastAPI factory + routes
+│   │   ├── mcp_tools/      # MCP-wrapped tools
+│   │   ├── agents/         # LangChain agent definitions
+│   │   ├── chains/         # LangChain chain logic
+│   │   ├── vector/         # FAISS index management
+│   │   └── models/         # Pydantic data models
+│   └── scripts/            # Index building utilities
+├── frontend/               # Next.js 15 + TypeScript
+│   └── src/
+│       ├── components/     # Magic MCP generated UI
+│       ├── hooks/          # Event streaming hooks
+│       └── lib/            # API client & types
+└── docs/                   # Architecture & API docs
+```
+
+## 🎯 Core Features
+
+- **Live MCP Reasoning Stream**: Watch each agent think in real-time
+- **4-Agent Debate System**: Round-robin elimination tournament
+- **FAISS Vector Search**: Free, fast movie similarity matching
+- **Magic MCP Integration**: Auto-generated UI components
+- **One-Command Deploy**: `docker compose up --build`
+
+## 🔧 Tech Stack
+
+- **Backend**: FastAPI 1.4, LangChain, MCP, FAISS
+- **Frontend**: Next.js 15, TypeScript, Tailwind, Framer Motion
+- **AI**: OpenAI GPT-4, Sentence Transformers
+- **Data**: Wikipedia movie plots dataset
+
+## 📊 Port Map
+
+| Service  | Port | Purpose |
+|----------|------|---------|
+| Frontend | 3000 | Next.js UI |
+| Backend  | 8000 | FastAPI + MCP |
+| Postgres | 5432 | Movie metadata (optional) |
+
+## 🎬 Demo Flow
+
+1. Four users input quick profiles (name, age, favorite films, tonight's vibe)
+2. Each profile generates a "lawyer" agent with distinct personality
+3. Agents search FAISS index for candidate movies
+4. Round-robin debate eliminates movies until consensus
+5. Live reasoning stream shows each agent's thoughts
+6. Final recommendation with happiness score
+
+---
+
+**Built for the 3-hour hackathon challenge** ⚡
